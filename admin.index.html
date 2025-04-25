@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Oishi Admin Panel</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background: #fff8f0;
+        margin: 0;
+        padding: 20px;
+      }
+
+      h2 {
+        text-align: center;
+        color: #6b3e26;
+      }
+
+      .orders-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 30px;
+      }
+
+      .orders-table th,
+      .orders-table td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: center;
+      }
+
+      .orders-table th {
+        background-color: #ffe0b3;
+        color: #5e3c1b;
+      }
+
+      .status-select {
+        padding: 6px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>🍱 Oishi Admin Panel</h2>
+
+    <table class="orders-table">
+      <thead>
+        <tr>
+          <th>Order #</th>
+          <th>Items</th>
+          <th>Total (₹)</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="orderList">
+        <!-- Orders will be shown here -->
+      </tbody>
+    </table>
+
+    <script>
+      const orders = JSON.parse(localStorage.getItem("orders") || "[]");
+      const orderList = document.getElementById("orderList");
+
+      orders.forEach((order) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+      <td>${order.id}</td>
+      <td>${order.items}</td>
+      <td>₹${order.total}</td>
+      <td>
+        <select class="status-select">
+          <option ${
+            order.status === "Preparing" ? "selected" : ""
+          }>Preparing</option>
+          <option ${order.status === "Ready" ? "selected" : ""}>Ready</option>
+          <option ${
+            order.status === "Delivered" ? "selected" : ""
+          }>Delivered</option>
+        </select>
+      </td>
+    `;
+        orderList.appendChild(row);
+      });
+    </script>
+  </body>
+</html>

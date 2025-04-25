@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Oishi Desserto</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background: #fffaf3;
+        margin: 0;
+        padding: 20px;
+        color: #3e2c20;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      .decor-image {
+        position: absolute;
+        z-index: -1;
+        opacity: 0.85;
+        transition: transform 0.3s ease;
+      }
+
+      .decor-image:hover {
+        transform: scale(1.05);
+      }
+
+      .brownie-pic {
+        top: -40px;
+        left: -60px;
+        width: 220px;
+        border-radius: 20px;
+      }
+
+      .panagam-pic {
+        bottom: -30px;
+        right: -40px;
+        width: 180px;
+        border-radius: 50%;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: auto;
+        background: #ffffff;
+        padding: 25px;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        position: relative;
+        z-index: 1;
+      }
+
+      h2 {
+        text-align: center;
+        color: #6b3e26;
+      }
+
+      h3 {
+        margin-top: 30px;
+        color: #d35400;
+        border-bottom: 1px solid #f3e0d6;
+        padding-bottom: 5px;
+      }
+
+      .menu-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 12px 0;
+      }
+
+      label {
+        flex: 1;
+      }
+
+      input[type="number"] {
+        width: 60px;
+        padding: 6px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+      }
+
+      button {
+        display: block;
+        width: 100%;
+        background-color: #2e7d32;
+        color: white;
+        border: none;
+        padding: 14px;
+        font-size: 16px;
+        border-radius: 8px;
+        margin-top: 25px;
+        cursor: pointer;
+      }
+
+      #order-summary {
+        margin-top: 30px;
+        border-top: 1px solid #ddd;
+        padding-top: 20px;
+        text-align: center;
+      }
+
+      #total,
+      #order-number {
+        font-weight: bold;
+        font-size: 18px;
+        margin-top: 10px;
+      }
+
+      #qr {
+        margin-top: 15px;
+      }
+
+      img#qr-img {
+        border-radius: 12px;
+        border: 1px solid #ccc;
+        margin-top: 10px;
+      }
+
+      @media (max-width: 600px) {
+        .brownie-pic {
+          width: 140px;
+          top: -20px;
+          left: -30px;
+        }
+
+        .panagam-pic {
+          width: 120px;
+          bottom: -20px;
+          right: -20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Decorative Images -->
+    <img
+      src="https://source.unsplash.com/featured/?brownie"
+      class="decor-image brownie-pic"
+      alt="Brownie"
+    />
+    <img
+      src="https://source.unsplash.com/featured/?lemon-drink"
+      class="decor-image panagam-pic"
+      alt="Panagam"
+    />
+
+    <div class="container">
+      <h2>🍫 Oishi Desserto</h2>
+
+      <h3>Brownies</h3>
+      <div class="menu-item">
+        <label>Classic Brownie (₹40)</label
+        ><input type="number" id="classicBrownie" min="0" value="0" />
+      </div>
+      <div class="menu-item">
+        <label>Walnut Brownie (₹50)</label
+        ><input type="number" id="walnutBrownie" min="0" value="0" />
+      </div>
+      <div class="menu-item">
+        <label>Choco Chip Brownie (₹55)</label
+        ><input type="number" id="chipBrownie" min="0" value="0" />
+      </div>
+      <div class="menu-item">
+        <label>Fudge Brownie (₹60)</label
+        ><input type="number" id="fudgeBrownie" min="0" value="0" />
+      </div>
+
+      <h3>Panagam</h3>
+      <div class="menu-item">
+        <label>Classic Panagam (₹25)</label
+        ><input type="number" id="classicPanagam" min="0" value="0" />
+      </div>
+      <div class="menu-item">
+        <label>Lemon Panagam (₹30)</label
+        ><input type="number" id="lemonPanagam" min="0" value="0" />
+      </div>
+      <div class="menu-item">
+        <label>Mint Panagam (₹30)</label
+        ><input type="number" id="mintPanagam" min="0" value="0" />
+      </div>
+
+      <h3>Chocolate Variants</h3>
+      <div class="menu-item">
+        <label>Hot Chocolate (₹45)</label
+        ><input type="number" id="hotChoco" min="0" value="0" />
+      </div>
+      <div class="menu-item">
+        <label>Chocolate Milkshake (₹50)</label
+        ><input type="number" id="chocoShake" min="0" value="0" />
+      </div>
+      <div class="menu-item">
+        <label>Choco Lava Cup (₹60)</label
+        ><input type="number" id="lavaCup" min="0" value="0" />
+      </div>
+
+      <button onclick="placeOrder()">✅ Place Order</button>
+
+      <div id="order-summary" style="display: none">
+        <p id="order-number"></p>
+        <p id="total"></p>
+        <div id="qr">
+          <p>Scan to Pay:</p>
+          <img src="" id="qr-img" alt="QR Code" width="200" height="200" />
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const prices = {
+        classicBrownie: 40,
+        walnutBrownie: 50,
+        chipBrownie: 55,
+        fudgeBrownie: 60,
+        classicPanagam: 25,
+        lemonPanagam: 30,
+        mintPanagam: 30,
+        hotChoco: 45,
+        chocoShake: 50,
+        lavaCup: 60,
+      };
+
+      function placeOrder() {
+        const quantities = {
+          classicBrownie:
+            parseInt(document.getElementById("classicBrownie").value) || 0,
+          walnutBrownie:
+            parseInt(document.getElementById("walnutBrownie").value) || 0,
+          chipBrownie:
+            parseInt(document.getElementById("chipBrownie").value) || 0,
+          fudgeBrownie:
+            parseInt(document.getElementById("fudgeBrownie").value) || 0,
+          classicPanagam:
+            parseInt(document.getElementById("classicPanagam").value) || 0,
+          lemonPanagam:
+            parseInt(document.getElementById("lemonPanagam").value) || 0,
+          mintPanagam:
+            parseInt(document.getElementById("mintPanagam").value) || 0,
+          hotChoco: parseInt(document.getElementById("hotChoco").value) || 0,
+          chocoShake:
+            parseInt(document.getElementById("chocoShake").value) || 0,
+          lavaCup: parseInt(document.getElementById("lavaCup").value) || 0,
+        };
+
+        let total = 0;
+        let itemSummary = [];
+
+        for (let item in quantities) {
+          const qty = quantities[item];
+          if (qty > 0) {
+            total += qty * prices[item];
+            itemSummary.push(`${qty}x ${item.replace(/([A-Z])/g, " $1")}`);
+          }
+        }
+
+        const orderNumber = "ORD" + Math.floor(1000 + Math.random() * 9000);
+        const newOrder = {
+          id: orderNumber,
+          items: itemSummary.join(", "),
+          total: total,
+          status: "Preparing",
+        };
+
+        // Store to localStorage
+        const existingOrders = JSON.parse(
+          localStorage.getItem("orders") || "[]"
+        );
+        existingOrders.push(newOrder);
+        localStorage.setItem("orders", JSON.stringify(existingOrders));
+
+        document.getElementById(
+          "order-number"
+        ).innerText = `Order #: ${orderNumber}`;
+        document.getElementById("total").innerText = `Total: ₹${total}`;
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=your-upi-id@upi&pn=StreetCart&am=${total}`;
+        document.getElementById("qr-img").src = qrUrl;
+        document.getElementById("order-summary").style.display = "block";
+      }
+    </script>
+  </body>
+</html>
